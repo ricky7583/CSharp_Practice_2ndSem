@@ -1,0 +1,175 @@
+SELECT * from employees
+list employee_id , last_name, first_name , salary, job_id, department_id , MANUFACTURING
+list employee_id , last_name, first_name , salary, job_id, department_id , SALES FORCE on the field
+
+IF employee is in 60 then it means MANUFACTURING
+IF employee works for 80 then it means SALES FORCE
+everybody else they in BACK OFFICE
+
+SELECT employee_id , last_name, first_name , salary, job_id, department_id ,
+CASE
+WHEN department_id=50 THEN 'MANUFACTURING'
+WHEN department_id=60 THEN 'FRONT LINE'
+WHEN department_id=80 THEN 'SALES FORCE'
+ELSE 'BACK OFFICE'
+
+END AS WORKTYPE
+
+FROM employees
+
+========================================
+
+Find out all the employees who earn some commission
+
+commission_pct .3 .4 NOT NULL
+
+
+SELECT * FROM EMPLOYEES
+WHERE commission_pct IS NOT NULL
+
+Find out all the employees who do not earn any commission
+
+or
+commission_pct NULL
+
+SELECT * FROM EMPLOYEES
+WHERE commission_pct IS NULL
+
+
+SELECT last_name, salary, commission_pct FROM employees
+
+Find out how much total salary each employees gets by adding copmmission into calculation
+
+salary + salary *commission_pct
+
+SELECT last_name, salary, salary + salary*commission_pct as comsal
+FROM employees
+
+
+SELECT last_name, salary, commission_pct, salary + salary* NVL(commission_pct, 0) as aftcomcal
+FROM employees
+
+NVL2 has two options if it is null
+
+SELECT order#, orderdate, shipdate FROM ORDERS
+
+Using NVL2
+SELECT order#, orderdate, shipdate, NVL2 (shipdate, 'Shipped', 'Not shipped')
+FROM ORDERS
+
+===================================
+
+Date related functions and examples
+
+1)how to find how many days past from the day we hire each employees?
+SELECT employee_id, last_name, first_name, SYSDATE - hire_date AS numofday
+FROM EMPLOYEES
+
+2) How to find how many weeks past from the day we hire each employee?
+
+SELECT employee_id, last_name, first_name, (SYSDATE - hire_date)/7 AS numofweeks
+FROM EMPLOYEES
+
+round this this number to closest 2 digit
+
+SELECT employee_id, last_name, first_name, ROUND ( (SYSDATE - hire_date)/7,2 ) AS numofweeks
+FROM EMPLOYEES
+
+3) How to find how many months past from the day we hire each employee?
+
+SELECT employee_id, last_name, first_name, ROUND ( (SYSDATE - hire_date)/7,2 ) AS numofweeks
+FROM EMPLOYEES
+this above one is not scientific
+
+Scientific one is the one using MONTHS_BETWEEN
+SELECT employee_id, last_name, first_name, MONTHS_BETWEEN (SYSDATE , hire_date) AS numofmonths
+FROM EMPLOYEES
+
+SELECT employee_id, last_name, first_name, TRUNC (MONTHS_BETWEEN (SYSDATE , hire_date),0) AS numofmonths
+FROM EMPLOYEES
+
+
+Q5)
+Find out min , max , avg salary , total employee numbers, total salary for entire company?
+SELECT MIN (salary) , MAX(salary) , AVG(salary),COUNT(*),SUM(salary) FROM employees
+
+Q6)
+Find out min , max , avg salary , total employee numbers, total salary for all employees who work in
+either department 60 or 90, 110 ?
+SELECT MIN (salary) , MAX(salary) , AVG(salary),COUNT(*),SUM(salary) FROM employees
+WHERE department_id IN (60,90,110)
+
+Q7)
+Find out min , max , avg salary , total employee numbers, total salary for all employees who
+work as job_id somehow %SA% ?
+
+SELECT MIN (salary) , MAX(salary) , AVG(salary),COUNT(*),SUM(salary) FROM employees
+WHERE UPPER (job_id) LIKE '%SA%'
+
+Rule... When you want to find out total count.. inside COUNT function always use either * or primary ekey
+SELECT COUNT(*) FROM Employees --- it checks priamry key employee_id and finds total employees
+SELECT COUNT(employee_id) FROM Employees
+-- buuuuut do not use any other column for this purpose such as commission_pct
+
+SELECT COUNT(employee_id) FROM Employees -- Rioght answer
+SELECT COUNT(commission_pct) FROM Employees -- Wrong answer
+
+to to make correct use NVL function and convert nulls to 1
+SELECT COUNT( NVL( commission_pct,1)) FROM Employees -- Right answer
+
+
+
+MIN and MAX functions can work with numbers values and /or date values.
+
+Q7) find out what is the latest date we hired any employee (mind you i am not asking who we hired latestO)
+am asking when (what is the date) that we hired somebody?
+
+SELECT MAX(hire_date) FROM EMPLOYEES
+
+Q8) find out what is the oldest date that we hired any employee (mind you i am not asking who we hired earliest)
+am asking when (what is the date) that we hired somebody ealiest?
+
+SELECT MIN(hire_date) FROM EMPLOYEES
+
+
+
+
+
+Find how many employees we have?
+SELECT count(employee_id) from employees --108
+
+Find how many different department in total that they work
+
+
+SELECT count(department_id) FROM employees -wwromng info
+
+
+SELECT last_name, salary, department_id FROM EMPLOYEES
+
+SELECT count(DISTINCT (department_id) ) FROM employees -- right answer. this shows 11 unique departments are defined
+---in this company so 108 people are working any of these 11 different department.
+
+
+
+Q9-1)
+Find out min , max , avg salary , total employee numbers, total salary for entire company?
+
+SELECT MIN (salary) , MAX(salary) , AVG(salary),COUNT(*),SUM(salary) FROM employees
+
+Q9-2) my boss wants to see similar fogures at department_id breakdown
+Find out min , max , avg salary , total employee numbers, total salary for entire company but at
+department_id breakdown
+
+1000 28320 6895 108 --instead of seeing one summary line , boss wanted to see below department_id breakdown level
+
+10 3000 5000 5000 7
+20 1000 6000 4500 5
+30
+40
+50
+60
+
+SELECT department_id, MIN (salary) , MAX(salary) , AVG(salary),COUNT(*),SUM(salary)
+FROM employees
+GROUP BY department_id
+ORDER BY department_id

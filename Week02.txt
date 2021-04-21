@@ -1,0 +1,23 @@
+SELECT
+select * from (이름)
+이름 안에 있는 모든 레이블 선택
+
+select(항목 이름)
+from (DB 이름)
+예)
+select salary, paid
+from departments
+
+where (조건)
+!=, <> 는 False 찾기
+예) where salary !=4000
+where department in (10,20,30) 10 또는 20 또는 30
+where pubid between 1 and 3
+
+Field(Column) (Attribute)
+Record(Row) (tuple)
+Data type: Character vs number vs Date
+
+Only select doesn't matter with caps.
+
+DML

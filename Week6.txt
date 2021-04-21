@@ -1,0 +1,26 @@
+select * from (tablename)
+'D$'
+
+Q3.
+
+List the customer number , first name, last name for each customer in the CUSTOMERS table, along with the city
+and state in which the customer lives .
+Choose only the customers who live in FL (Florida) and CA (california) and also at the same who did not
+provide any email address.. email addres is NULL
+
+select CUSTOMER#, FIRSTNAME, LASTNAME, CITY, state, email from CUSTOMERS
+where state='FL' OR STATE='CA' AND email IS NULL
+
+List the title and publication date for each book in the BOOKS table. Use the column heading
+“Publication Date” for the Pubdate field
+answer
+
+select title,pubdate "Publication Date" from books
+
+Create a list of each book title stored in the BOOKS table and the category in which each
+book belongs. Reverse the sequence of the columns so that the category of each book is
+listed first.
+
+
+SELECT category ,title FROM books
+ORDER BY CATEGORY ASC

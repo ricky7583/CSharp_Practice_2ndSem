@@ -1,0 +1,41 @@
+CREATE TABLE TEST2
+(
+empid NUMBER (4),
+last_name CHAR(40),
+first_name VARCHAR2 (40) ,
+salary number ( 9,2) DEFAULT 1 ,
+hire_date date DEFAULT SYSDATE,
+dateofBirth date
+)
+
+describe
+desc (항목 이름)
+
+항목 추가 시
+alter table (표 이름) add (추가할 항목 이름) (변수 || 자릿수)
+항목 변경 시 
+alter table (표 이름) modify (변경할 항목 이름) (변경할 값)
+
+1. make this column unused
+alter table test2 set unused (항목 이름)
+2. just completely drop that column
+alter table test2 drop column 항목 이름
+3. Modify (change column data type or size)
+change first_name size from varchar2(40) to varchar2(45)
+
+Change table name
+rename TEST2 to My_test_employee
+TEST2 permanently gone
+insert into _My_test_employee values(1,'Cam','Ersan',3000,sysdate, 'ecam@centennial.ca','45454',10)
+
+truncate table (표 이름)
+-entirely removes all rows, table structure stays as empty.
+you can't choose which record to be deleted. Has to be all records (fast)
+delete table (표 이름)
+you can delete some or record, entire all records. Table structure stays as empty(slow)
+drop table (표 이름)
+deletes entire records and plus table structure is deleted. Can be recovered.
+alter table (표 이름) DROP column (항목 이름)
+
+Describe (표 이름)
+desc
