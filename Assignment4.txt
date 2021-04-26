@@ -1,0 +1,99 @@
+   1.   List all crimes with a status of CA (can appeal) or IA (in appeal). List the crime ID, criminal
+ID, date charged, and status.
+
+SELECT crime_id, criminal_id, date_charged, status FROM CRIMES
+WHERE STATUS='CA' OR STATUS='IA';
+ 
+
+
+2. Produce a list showing each active police officer and his or her community assignment, indicated
+by the second letter of the precinct code. Display the community description listed in
+the following chart, based on the second letter of the precinct code.
+
+Sample Output
+
+ 
+
+
+Hint: Use DECODE or CASE and inside this function you can use SUBSTR to get only 1 digit from 2nd position..  DECODE(SUBSTR(precinct, 2, 1)
+
+ 
+SELECT CASE WHEN PRECINCT LIKE '_A%' THEN 'A'
+WHEN PRECINCT LIKE '_B%' THEN 'B'
+WHEN PRECINCT LIKE '_C%' THEN 'C'
+ELSE 'NOT CURRENTLY ASSIGNED' 
+END "Second Letter of Precinct code", 
+CASE WHEN PRECINCT LIKE '_A%' THEN 'SHADY GROVE' 
+WHEN PRECINCT LIKE '_B%' THEN 'CENTER CITY' 
+WHEN PRECINCT LIKE '_C%' THEN 'BAY LANDING' 
+ELSE 'NOT CURRENTLY ASSIGNED' 
+END "Description" FROM OFFICERS;
+ 
+3. List all sentences with a probation officer assigned. List the sentence ID, criminal ID, and
+probation officer ID. Sort the list by probation officer ID and then criminal ID.
+SELECT SENTENCE_ID, CRIMINAL_ID, PROB_ID FROM SENTENCES ORDER BY PROB_ID, CRIMINAL_ID; 
+4. List all criminals along with the crime charges filed. The report needs to include the criminal
+ID, name, crime code, and fine amount.
+
+Hint : Use Inner Join 
+
+ SELECT cri.CRIMINAL_ID, cri.FIRST, cri.LAST, cc.CRIME_CODE, cc.FINE_AMOUNT FROM CRIMINALS cri
+JOIN CRIMES cr ON cr.CRIMINAL_ID = cri.CRIMINAL_ID
+JOIN CRIME_CHARGES cc ON cc.CRIME_ID = cr.CRIME_ID
+ORDER BY CRIMINAL_ID, first, last, crime_code, fine_amount;
+ 
+5. List all criminals along with crime status and appeal status (if applicable). The reports need
+to include the criminal ID, name, crime classification, date charged, appeal filing date, and
+appeal status. Show all criminals, regardless of whether they have filed an appeal.
+
+SELECT cls.criminal_id, cls.first, cls.last, cr.classification, cr.date_charged,ap.filing_date, ap.status
+FROM CRIMINALS cls
+JOIN CRIMES cr ON cr.criminal_id = cls.criminal_id
+JOIN APPEALS ap ON ap.crime_id = cr.crime_id
+ORDER BY criminal_id;
+ 
+Hint : Use LEFT or RIGHT OUTER join
+
+6. List all criminals along with crime information. The report needs to include the criminal ID,
+name, crime classification, date charged, crime code, and fine amount. Include only crimes
+classified as “Other.” Sort the list by criminal ID and date charged.
+
+SELECT cls.criminal_id, cls.first, cls.last, cr.classification, cr.date_charged,cc.fine_amount, cc.crime_code FROM criminals cls
+JOIN CRIMES cr ON cr.criminal_id = cr.criminal_id
+JOIN CRIME_CHARGES cc ON cc.crime_id = cr.crime_id
+WHERE classification = 'O' ORDER BY criminal_id, date_charged;
+
+ 
+ Hint : Use Inner Join 
+
+7. Create an alphabetical list of all criminals, including criminal ID, name, violent offender status,
+parole status, and any known aliases.
+
+SELECT cri.criminal_id, cri.first, cri.last, cri.v_status, cri.p_status, ali.alias
+FROM CRIMINALS cri 
+LEFT OUTER JOIN aliases ali ON cri.criminal_id = ali.criminal_id
+ORDER BY last, first;
+
+
+ 
+
+8) List all crimes with a hearing date more than 14 days after the date charged. List the crime
+ID, criminal ID, date charged, and hearing date.
+SELECT crime_ID, criminal_ID, date_charged, hearing_date
+FROM CRIMES
+WHERE hearing_date-date_charged > 14;
+ 
+
+9. List all criminals with the zip code 23510. List the criminal ID, last name, and zip code. Sort
+the list by criminal ID. 
+ SELECT criminal_ID, last, zip
+FROM CRIMINALS
+WHERE zip = 23510;
+ 
+
+10. List all crimes that don’t have a hearing date scheduled. List the crime ID, criminal ID, date
+charged, and hearing date.
+SELECT crime_ID, criminal_ID, date_charged, hearing_date
+FROM CRIMES
+WHERE hearing_date IS NULL;
+

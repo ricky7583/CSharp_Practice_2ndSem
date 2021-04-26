@@ -1,0 +1,54 @@
+1.Create a table named DEPT based on the following chart. 
+ 
+create table DEPT(
+    ID number(7) primary key,
+    NAME varchar2(25)
+);
+desc DEPT
+
+b) Run another Insert statement / command 
+INSERT INTO DEPT (ID , NAME) VALUES  (40, ‘Accounting’) ;   
+Explain if this insert run successfully and added record this time? NO  
+Why?
+unique constraint (COMP122_W21_ERS_155.SYS_C00852365) violated
+Because the value that tried to INSERT is already the primary key of the table and the value already exists. The value of the primary key can’t be duplicated.
+P.S: Make sure you rewrite these INSERT statements in SQL Developer by yourself  or if you copy paste from this word document then fix (rewrite) single ‘  ‘ quote.
+
+2) Add two new columns to this DEPT table  (Manager_ID and City Columns)
+a)
+Column Names	Manager_ID	City
+Key Type		UNIQUE KEY
+Data Type	NUMBER	VARCHAR2
+Lenght	5	30
+
+Hints: Use ALTER TABLE ADD column command
+ALTER TABLE XXXXX  ADD  Manager_ID ……
+ALTER TABLE XXXXX  ADD City   ……
+ALTER TABLE DEPT ADD Manager_ID NUMBER(5);
+ALTER TABLE DEPT ADD City VARCHAR2(30) UNIQUE;
+ 
+Then also run another ALTER TABLE command to add constraint for Unique Key on City column.
+ALTER TABLE XXXXX  ADD CONSTRAINT
+ALTER TABLE DEPT ADD CONSTRAINT city UNIQUE(City);
+
+b) Use DESCRIBE command to show final structure of DEPT table. Get command and your result copy paste here and also capture screen shot of your SQL Developer and place here.
+desc DEPT
+
+CREATE TABLE EMP(
+    ID NUMBER(7),
+    LAST_NAME VARCHAR2(25),
+    FIRST_NAME VARCHAR2(25),
+    DEPT_ID NUMBER(7),
+    CONSTRAINT DEPT_ID FOREIGN KEY(ID) 
+    REFERENCES DEPT(ID)
+);
+
+4.  Create the new table name EMPLOYEE2 based on your existing Employees table.  Use Clone / Copy techniques from another table by using SELECT statement.
+Include only EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY and DEPARTMENT_ID columns.
+When you develop your SELECT statement for Create Table include employees only who work for Department 50 or 60.
+CREATE TABLE EMPLOYEE2
+AS (SELECT ID, FIRST_NAME, LAST_NAME, DEPT_ID FROM EMP WHERE DEPT_ID = 50 OR DEPT_ID = 60);
+ALTER TABLE EMPLOYEE2 ADD SALARY NUMBER(7);
+SELECT*FROM EMPLOYEE2;
+
+

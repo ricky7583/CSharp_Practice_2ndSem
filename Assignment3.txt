@@ -1,0 +1,84 @@
+4. Produce a list of all customer names in which the first letter of the first and last names is in
+uppercase and the rest are in lowercase.
+
+
+5. Create a list of all customer numbers along with text indicating whether the customer has
+been referred by another customer. Display the text “NOT REFERRED” if the customer
+wasn’t referred to JustLee Books by another customer or “REFERRED” if the customer was
+referred.
+
+Hint: Use NVL2  function for question 5
+
+ 
+6. Display a list of all book titles and the percentage of markup for each book. The percentage
+of markup should be displayed as a whole number (that is, multiplied by 100) with no
+decimal position, followed by a percent sign (for example, .2793 = 28%). (The percentage
+of markup should reflect the difference between the retail and cost amounts as a percent of
+the cost.)
+
+Use : ROUND function … formula  should be similar to (retail-cost)/cost *100
+
+
+7. Display the current day of the week, hour, minutes, and seconds of the current date setting
+on the computer you’re using.
+
+ 
+8. Determine the length of data stored in the ISBN field of the BOOKS table.  
+
+
+9. Produce a list of each customer number and display the position of the first occurrence of a 3 in the
+	customer number if it exists.
+
+Use: INSTR for question 9
+ 
+
+  
+10. Produce a list of each customer number and the third and fourth digits of his or her zip
+code.  
+
+
+1. 
+SELECT * FROM BOOKS
+WHERE CATEGORY = 'COOKING';
+ 
+
+2. 
+SELECT * FROM BOOKS
+WHERE RETAIL > 30;
+ 
+
+3. 
+SELECT MAX(PUBDATE) AS MOSTRECENT FROM BOOKS;  
+
+ 
+4. 
+SELECT UPPER(FIRSTNAME), LOWER(LASTNAME) 
+FROM CUSTOMERS;
+
+ 
+
+5. 
+SELECT CUSTOMER#, LASTNAME, FIRSTNAME, ADDRESS, CITY, STATE, ZIP, REFERRED, REGION, EMAIL, NVL2(REFERRED, 'REFFERED', 'NOT REFFERED') ISREFERRED 
+FROM CUSTOMERS;
+ 
+ 
+6. 
+SELECT TITLE, CONCAT(ROUND((RETAIL-COST)/COST *100),'%') AS MARKUP FROM BOOKS;
+ 
+7. 
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD:D:HH24:MI:SS'
+SELECT SYSDATE FROM DUAL;
+ 
+ 
+8. 
+SELECT DATALENGTH(ISBN) AS LENGTHISBN FROM BOOKS;
+ 
+9. 
+SELECT CUSTOMER#, INSTR(CUSTOMER#,3) AS NUM3LOCATION FROM CUSTOMERS ORDER BY INSTR(CUSTOMER#,3) DESC;
+ 
+
+10. 
+SELECT * FROM CUSTOMERS;
+SELECT CUSTOMER#, INSTR(ZIP, 3) AS THIRDZIP, INSTR(ZIP, 4) AS FOURTHZIP FROM CUSTOMERS ORDER BY INSTR(ZIP, 3), INSTR(ZIP,4);
+
+
